@@ -1,69 +1,7 @@
 use std::io;
 
-fn print_table(table: [char; 9]) {
-    
-	println!("+---+---+---+");
-	println!("| {} | {} | {} |", table[0], table[1], table[2]);
-	println!("+---+---+---+");
-	println!("| {} | {} | {} |", table[3], table[4], table[5]);
-	println!("+---+---+---+");
-	println!("| {} | {} | {} |", table[6], table[7], table[8]);
-	println!("+---+---+---+");
-
-}
-
-fn change_player(mut player: char) -> char {
-	if player == 'x' { 'o' } else { 'x' }
-}
-
-/*
-/	We're adding player as second parameter
-/	because we want to know who played
-/	last move so we wouldn't have to check
-/	both times
-*/
-fn check_table(table: [char; 9], player: char) -> bool {
-
-	if full_table(table) {
-		return true;
-	}
-
-	if (table[0], table[1], table[2]) == (player, player, player) ||
-		(table[3], table[4], table[5]) == (player, player, player) ||
-		(table[6], table[7], table[8]) == (player, player, player) ||
-		(table[0], table[3], table[6]) == (player, player, player) ||
-		(table[1], table[4], table[7]) == (player, player, player) ||
-		(table[2], table[5], table[8]) == (player, player, player) ||
-		(table[0], table[4], table[8]) == (player, player, player) ||
-		(table[2], table[4], table[6]) == (player, player, player) 
-	{	
-		return true;
-	}
-
-	false
-
-}
-
-fn full_table(table: [char; 9]) -> bool {
-
-	if table[0] != ' ' &&
-		table[1] != ' ' &&
-		table[2] != ' ' &&
-		table[3] != ' ' &&
-		table[4] != ' ' &&
-		table[5] != ' ' &&
-		table[6] != ' ' &&
-		table[7] != ' ' &&
-		table[8] != ' ' 
-	{
-		true
-	} 
-	else 
-	{
-		false
-	}
-
-}
+mod table;
+mod player;
 
 fn main() {
 
@@ -84,11 +22,11 @@ fn main() {
 	while !game_over {
     
 		// change player
-		player = change_player(player);
+		player = player::change_player(player);
 
 		// clears input, prints table and curren player
 		input.clear();
-		print_table(table);
+		table::print_table(table);
 		println!("Current player: {}", player);
 		println!("Choose field (1-9): ");
 		
@@ -119,7 +57,7 @@ fn main() {
 		while !valid {
 
 			input.clear();
-			print_table(table);
+			table::print_table(table);
 			println!("Choose field (1-9): ");
 			io::stdin().read_line(&mut input)
 				.expect("Failed to read line");
@@ -142,12 +80,12 @@ fn main() {
 		}
 
 		// check if current player won the game
-		game_over = check_table(table, player);
+		game_over = table::check_table(table, player);
 
 	}
 	
 	// check if table is full or last player won the game
-	if full_table(table) {
+	if table::full_table(table) {
 		println!("It's a tie!");
 	} else {
 		println!("Player {} won the game!", player);
