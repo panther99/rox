@@ -116,7 +116,7 @@ fn main() {
 		}
 
 		// do this while field is invalid
-        while !valid {
+		while !valid {
 
 			input.clear();
 			print_table(table);
@@ -139,12 +139,12 @@ fn main() {
 				valid = false;
 			}
 
-        }
+		}
 
 		// check if current player won the game
 		game_over = check_table(table, player);
 
-    }
+	}
 	
 	// check if table is full or last player won the game
 	if full_table(table) {
