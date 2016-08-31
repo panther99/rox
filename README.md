@@ -5,7 +5,7 @@ This is Tic Tac Toe game written in Rust as learning project. Code will be impro
 ## Building
 
 ```sh
-git clone https://github.com/panther99/rox
+git clone https://github.com/panther99/rox.git
 cd rox
 cargo build
 ```
