@@ -38,23 +38,8 @@ pub fn check_table(table: [char; 9], player: char) -> bool {
 
 }
 
-pub fn full_table(table: [char; 9]) -> bool {
+pub fn full_table(mut table: [char; 9]) -> bool {
 
-	if table[0] != ' ' &&
-		table[1] != ' ' &&
-		table[2] != ' ' &&
-		table[3] != ' ' &&
-		table[4] != ' ' &&
-		table[5] != ' ' &&
-		table[6] != ' ' &&
-		table[7] != ' ' &&
-		table[8] != ' ' 
-	{
-		true
-	} 
-	else 
-	{
-		false
-	}
+	table.iter().all(|&c| c != ' ')
 
 }

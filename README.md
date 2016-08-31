@@ -19,7 +19,7 @@ cargo run
 ## To do
 
 * Write more modular code
-* Use mapping instead of checking all fields in `full_table` function
+* Use mapping instead of checking all fields in `full_table` function ✓
 * Allow replays
 * AI (maybe)
 
