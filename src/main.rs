@@ -37,21 +37,38 @@ fn main() {
 
 		// we're shadowing field to usize to use it 
 		// for indexing array in field checker
-		let field: usize = input.trim().parse()
-			.expect("Failed to read line");
+		let field = input.trim().parse::<usize>();
 
-		// check if user wrote valid field
-		if field > 0 && field < 10 {
-			if table[field-1] == ' ' {
-				table[field-1] = player;
-				valid = true;
-			} else {
-				println!("That field isn't empty!");
-				valid = false;
+		// this will catch errors such as empty input
+		match field {
+			
+			// check if user wrote valid field
+			Ok(f) => {
+
+				if f > 0 && f < 10 {
+					if table[f-1] == ' ' {
+						table[f-1] = player;
+						valid = true;
+					} else {
+						println!("That field isn't empty!");
+						valid = false;
+					}
+				} else {
+					println!("That field doesn't exist!");
+					valid = false;
+				}
+
+			},
+
+			// changing player right away so
+			// variable of current player will
+			// return to the same player while
+			// there's an error in user input
+			Err(e) => { 
+				println!("Error: {:?}", e);
+				player::change_player(&mut player); 
 			}
-		} else {
-			println!("That field doesn't exist!");
-			valid = false;
+
 		}
 
 		// do this while field is invalid
@@ -62,20 +79,39 @@ fn main() {
 			println!("Choose field (1-9): ");
 			stdin.read_line(&mut input)
 				.expect("Failed to read line");
-			let field: usize = input.trim().parse()
-				.expect("Failed to read line");
-		
-			if field > 0 && field < 10 {
-				if table[field-1] == ' ' {
-					table[field-1] = player;
-					valid = true;
-				} else {
-					println!("That field isn't empty!");
-					valid = false;
+
+			let field = input.trim().parse::<usize>();
+
+			// this will catch errors such as empty input
+			match field {
+			
+				// check if user wrote valid field
+				Ok(f) => {
+
+					if f > 0 && f < 10 {
+						if table[f-1] == ' ' {
+							table[f-1] = player;
+							valid = true;
+						} else {
+							println!("That field isn't empty!");
+							valid = false;
+						}
+					} else {
+						println!("That field doesn't exist!");
+						valid = false;
+					}
+
+				},
+
+				// changing player right away so
+				// variable of current player will
+				// return to the same player while
+				// there's an error in user input
+				Err(e) => { 
+					println!("Error: {:?}", e);
+					player::change_player(&mut player); 
 				}
-			} else {
-				println!("That field doesn't exist!");
-				valid = false;
+
 			}
 
 		}
