@@ -11,10 +11,12 @@ pub fn print_table(table: [char; 9]) {
 }
 
 /*
-/	We're adding player as second parameter
-/	because we want to know who played
-/	last move so we wouldn't have to check
-/	both times
+
+	We're adding player as second parameter
+	because we want to know who played
+	last move so we wouldn't have to check
+	both times
+
 */
 pub fn check_table(table: [char; 9], player: char) -> bool {
 
@@ -39,7 +41,5 @@ pub fn check_table(table: [char; 9], player: char) -> bool {
 }
 
 pub fn full_table(mut table: [char; 9]) -> bool {
-
 	table.iter().all(|&c| c != ' ')
-
 }

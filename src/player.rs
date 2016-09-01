@@ -1,3 +1,11 @@
-pub fn change_player(mut player: char) -> char {
-	if player == 'x' { 'o' } else { 'x' }
+pub fn change_player(player: &mut char) {
+
+	let p = player;
+
+	match *p {
+		'x' => *p = 'o',
+		'o' => *p = 'x',
+		_ => panic!("Unexpected player character {}.", *p)
+	}
+
 }

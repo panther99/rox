@@ -5,10 +5,11 @@ mod player;
 
 fn main() {
 
+	// create the table with 9 empty fields
 	let mut table: [char; 9] = [' '; 9];
 
-	// set x as first player
-	let mut player: char = 'x';
+	// set x as first player ('o' will be changed to 'x')
+	let mut player: char = 'o';
 
 	let mut stdin = io::stdin();
 	let mut input = String::new();
@@ -22,7 +23,7 @@ fn main() {
 	while !game_over {
     
 		// change player
-		player = player::change_player(player);
+		player::change_player(&mut player);
 
 		// clears input, prints table and curren player
 		input.clear();
@@ -31,7 +32,7 @@ fn main() {
 		println!("Choose field (1-9): ");
 		
 		// get user input
-		io::stdin().read_line(&mut input)
+		stdin.read_line(&mut input)
 			.expect("Failed to read line");
 
 		// we're shadowing field to usize to use it 
@@ -59,7 +60,7 @@ fn main() {
 			input.clear();
 			table::print_table(table);
 			println!("Choose field (1-9): ");
-			io::stdin().read_line(&mut input)
+			stdin.read_line(&mut input)
 				.expect("Failed to read line");
 			let field: usize = input.trim().parse()
 				.expect("Failed to read line");
