@@ -37,7 +37,7 @@ pub fn check_table(table: [char; 9]) -> bool
 
 pub fn valid_move(table: [char; 9], field: usize) -> bool
 {
-    let mut valid: bool = false;
+    let mut valid = false;
 
     if field > 0 && field < 10 {
         if table[field-1] == ' ' {

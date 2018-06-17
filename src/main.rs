@@ -17,8 +17,13 @@ fn main() {
     let mut valid = false;
     let mut game_over = false;
 
+    println!(" _____ _____ __ __ ");
+    println!("| __  |     |  |  |");
+    println!("|    -|  |  |-   -|");
+    println!("|__|__|_____|__|__|");
+
     println!("ROX - Tic Tac Toe in Rust");
-    println!("Author: Nikola S. (panther99)");
+    println!("Author: panther99 <nikola.stojakovic@hotmail.com>\n");
 
     while !game_over
     {
@@ -28,14 +33,27 @@ fn main() {
         println!("Choose field (1-9): ");
 
         stdin.read_line(&mut input).expect("Failed to read the line.");
-        let field = input.trim().parse::<usize>().unwrap();
+        match input.trim().parse::<usize>() {
+            Ok(n) => field = n,
+            Err(err) => {
+                input.clear();
+                field = 0;
+            },
+        }
 
         if table::valid_move(_table, field) {
             _table[field-1] = _player;
         } else {
             while !table::valid_move(_table, field) {
+                println!("Please type the number between 1 and 9.");
                 stdin.read_line(&mut input).expect("Failed to read the line.");
-                let field = input.trim().parse::<usize>().unwrap();
+                match input.trim().parse::<usize>() {
+                    Ok(n) => field = n,
+                    Err(err) => {
+                        input.clear();
+                        field = 0;
+                    },
+                }
             }
             _table[field-1] = _player;
         }
