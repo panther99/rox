@@ -1,5 +1,4 @@
-pub fn print_table(table: [char; 9])
-{
+pub fn print_table(table: [char; 9]) {
     println!("+---+---+---+");
     println!("| {} | {} | {} |", table[0], table[1], table[2]);
     println!("+---+---+---+");
@@ -9,13 +8,11 @@ pub fn print_table(table: [char; 9])
     println!("+---+---+---+");
 }
 
-pub fn full_table(table: [char; 9]) -> bool
-{
+pub fn full_table(table: [char; 9]) -> bool {
     table.iter().all(|&c| c != ' ')
 }
 
-pub fn check_table(table: [char; 9]) -> bool
-{
+pub fn check_table(table: [char; 9]) -> bool {
     if full_table(table) {
         return true;
     }
@@ -35,8 +32,7 @@ pub fn check_table(table: [char; 9]) -> bool
     false
 }
 
-pub fn valid_move(table: [char; 9], field: usize) -> bool
-{
+pub fn valid_move(table: [char; 9], field: usize) -> bool {
     let mut valid = false;
 
     if field > 0 && field < 10 {
@@ -48,8 +44,7 @@ pub fn valid_move(table: [char; 9], field: usize) -> bool
     return valid;
 }
 
-pub fn clear_table(table: &mut [char; 9])
-{
+pub fn clear_table(table: &mut [char; 9]) {
     for field in table {
         *field = ' ';
     }

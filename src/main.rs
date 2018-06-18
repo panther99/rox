@@ -10,11 +10,8 @@ fn main() {
 
     // set x as first player
     let mut _player = 'x';
-
-    let mut stdin = io::stdin();
     let mut input = String::new();
-    let mut field = 0;
-    let mut valid = false;
+    let mut field;
     let mut game_over = false;
 
     println!(" _____ _____ __ __ ");
@@ -25,17 +22,16 @@ fn main() {
     println!("ROX - Tic Tac Toe in Rust");
     println!("Author: panther99 <nikola.stojakovic@hotmail.com>\n");
 
-    while !game_over
-    {
+    while !game_over {
         input.clear();
         table::print_table(_table);
         println!("Current player: {}", _player);
         println!("Choose field (1-9): ");
 
-        stdin.read_line(&mut input).expect("Failed to read the line.");
+        io::stdin().read_line(&mut input).expect("Failed to read the line.");
         match input.trim().parse::<usize>() {
             Ok(n) => field = n,
-            Err(err) => {
+            Err(_) => {
                 input.clear();
                 field = 0;
             },
@@ -46,10 +42,10 @@ fn main() {
         } else {
             while !table::valid_move(_table, field) {
                 println!("Please type the number between 1 and 9.");
-                stdin.read_line(&mut input).expect("Failed to read the line.");
+                io::stdin().read_line(&mut input).expect("Failed to read the line.");
                 match input.trim().parse::<usize>() {
                     Ok(n) => field = n,
-                    Err(err) => {
+                    Err(_) => {
                         input.clear();
                         field = 0;
                     },
@@ -67,7 +63,7 @@ fn main() {
 
             println!("Do you want to play again? (y/n)");
             input.clear();
-            stdin.read_line(&mut input).expect("Failed to read the line.");
+            io::stdin().read_line(&mut input).expect("Failed to read the line.");
             let answer = input.chars().next().unwrap();
 
             if answer == 'y' || answer == 'Y' {

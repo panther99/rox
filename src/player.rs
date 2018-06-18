@@ -1,5 +1,4 @@
-pub fn change_player(player: &mut char)
-{
+pub fn change_player(player: &mut char) {
     let p = player;
 
     match *p {
