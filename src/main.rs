@@ -3,9 +3,13 @@ use std::io;
 mod player;
 mod table;
 
+use player::Player as Player;
+use player::PlayerKind as PlayerKind;
+use table::Table as Table;
+
 fn main() {
-    let mut _table = table::Table::new();
-    let mut _player = player::Player::new(player::PlayerKind::X);
+    let mut _table = Table::new();
+    let mut _player = Player::new(PlayerKind::X);
 
     let mut input = String::new();
     let mut field;

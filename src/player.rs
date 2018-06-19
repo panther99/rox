@@ -21,8 +21,8 @@ impl Player {
 
     pub fn print(&self) -> String {
         match self.kind {
-            PlayerKind::X => return String::from("x"),
-            PlayerKind::O => return String::from("o")
+            PlayerKind::X => String::from("x"),
+            PlayerKind::O => String::from("o")
         }
     }
 
