@@ -1,51 +1,73 @@
-pub fn print_table(table: [char; 9]) {
-    println!("+---+---+---+");
-    println!("| {} | {} | {} |", table[0], table[1], table[2]);
-    println!("+---+---+---+");
-    println!("| {} | {} | {} |", table[3], table[4], table[5]);
-    println!("+---+---+---+");
-    println!("| {} | {} | {} |", table[6], table[7], table[8]);
-    println!("+---+---+---+");
+use player::Player;
+use player::PlayerKind;
+
+pub struct Table {
+    fields: [ char; 9 ]
 }
 
-pub fn full_table(table: [char; 9]) -> bool {
-    table.iter().all(|&c| c != ' ')
-}
-
-pub fn check_table(table: [char; 9]) -> bool {
-    if full_table(table) {
-        return true;
+impl Table {
+    pub fn new() -> Table {
+        let mut _fields = [ ' '; 9 ];
+        Table { fields: _fields }
     }
 
-    if  (table[0] != ' ') && (table[0] == table[1] && table[1] == table[2]) ||
-        (table[3] != ' ') && (table[3] == table[4] && table[4] == table[5]) ||
-        (table[6] != ' ') && (table[6] == table[7] && table[7] == table[8]) ||
-        (table[0] != ' ') && (table[0] == table[3] && table[3] == table[6]) ||
-        (table[1] != ' ') && (table[1] == table[4] && table[4] == table[7]) ||
-        (table[2] != ' ') && (table[2] == table[5] && table[5] == table[8]) ||
-        (table[0] != ' ') && (table[0] == table[4] && table[4] == table[8]) ||
-        (table[2] != ' ') && (table[2] == table[4] && table[4] == table[6])
-    {
-        return true;
-    }
-
-    false
-}
-
-pub fn valid_move(table: [char; 9], field: usize) -> bool {
-    let mut valid = false;
-
-    if field > 0 && field < 10 {
-        if table[field-1] == ' ' {
-            valid = true;
+    pub fn mark(&mut self, player: &Player, field: usize) -> bool {
+        if (field > 0 && field < 10) && self.fields[field-1] == ' ' {
+            match player.kind {
+                PlayerKind::X => self.fields[field-1] = 'x',
+                PlayerKind::O => self.fields[field-1] = 'o'
+            }
+            return true;
         }
+
+        false
     }
 
-    return valid;
-}
+    pub fn print(&self) {
+        println!("+---+---+---+");
+        println!("| {} | {} | {} |", self.fields[0], self.fields[1], self.fields[2]);
+        println!("+---+---+---+");
+        println!("| {} | {} | {} |", self.fields[3], self.fields[4], self.fields[5]);
+        println!("+---+---+---+");
+        println!("| {} | {} | {} |", self.fields[6], self.fields[7], self.fields[8]);
+        println!("+---+---+---+");
+    }
 
-pub fn clear_table(table: &mut [char; 9]) {
-    for field in table {
-        *field = ' ';
+    pub fn is_full(&self) -> bool {
+        self.fields.iter().all(|&field| field != ' ')
+    }
+
+    pub fn ends_game(&self) -> bool {
+        if self.is_full() {
+            return true;
+        }
+
+        if  (self.fields[0] != ' ') && 
+            (self.fields[0] == self.fields[1] && self.fields[1] == self.fields[2]) ||
+            (self.fields[3] != ' ') && 
+            (self.fields[3] == self.fields[4] && self.fields[4] == self.fields[5]) ||
+            (self.fields[6] != ' ') &&
+            (self.fields[6] == self.fields[7] && self.fields[7] == self.fields[8]) ||
+            (self.fields[0] != ' ') && 
+            (self.fields[0] == self.fields[3] && self.fields[3] == self.fields[6]) ||
+            (self.fields[1] != ' ') && 
+            (self.fields[1] == self.fields[4] && self.fields[4] == self.fields[7]) ||
+            (self.fields[2] != ' ') && 
+            (self.fields[2] == self.fields[5] && self.fields[5] == self.fields[8]) ||
+            (self.fields[0] != ' ') && 
+            (self.fields[0] == self.fields[4] && self.fields[4] == self.fields[8]) ||
+            (self.fields[2] != ' ') && 
+            (self.fields[2] == self.fields[4] && self.fields[4] == self.fields[6])
+        {
+            return true;
+        }
+
+        false
+    }
+
+    pub fn clear(&mut self) {
+        for field in &mut self.fields {
+            *field = ' ';
+        }
     }
 }

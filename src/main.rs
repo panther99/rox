@@ -1,17 +1,15 @@
 use std::io;
 
-mod table;
 mod player;
+mod table;
 
 fn main() {
+    let mut _table = table::Table::new();
+    let mut _player = player::Player::new(player::PlayerKind::X);
 
-    // create the table with 9 empty fields
-    let mut _table: [char; 9] = [' '; 9];
-
-    // set x as first player
-    let mut _player = 'x';
     let mut input = String::new();
     let mut field;
+    
     let mut game_over = false;
 
     println!(" _____ _____ __ __ ");
@@ -24,8 +22,8 @@ fn main() {
 
     while !game_over {
         input.clear();
-        table::print_table(_table);
-        println!("Current player: {}", _player);
+        _table.print();
+        println!("Current player: {}", _player.print());
         println!("Choose field (1-9): ");
 
         io::stdin().read_line(&mut input).expect("Failed to read the line.");
@@ -37,11 +35,9 @@ fn main() {
             },
         }
 
-        if table::valid_move(_table, field) {
-            _table[field-1] = _player;
-        } else {
-            while !table::valid_move(_table, field) {
-                println!("Please type the number between 1 and 9.");
+        if !_table.mark(&_player, field) {
+            while !_table.mark(&_player, field) {
+                println!("Input is invalid or that field is already marked. Try again.");
                 io::stdin().read_line(&mut input).expect("Failed to read the line.");
                 match input.trim().parse::<usize>() {
                     Ok(n) => field = n,
@@ -51,14 +47,13 @@ fn main() {
                     },
                 }
             }
-            _table[field-1] = _player;
         }
 
-        if table::check_table(_table) {
-            if table::full_table(_table) {
+        if _table.ends_game() {
+            if _table.is_full() {
                 println!("It's a tie!");
             } else {
-                println!("Player {} won the game!", _player);
+                println!("Player {} won the game!", _player.print());
             }
 
             println!("Do you want to play again? (y/n)");
@@ -67,15 +62,14 @@ fn main() {
             let answer = input.chars().next().unwrap();
 
             if answer == 'y' || answer == 'Y' {
-                table::clear_table(&mut _table);
-                _player = 'x';
+                _table.clear();
+                _player.set_to_x();
             } else {
                 println!("Bye!");
                 game_over = true;
             }
         } else {
-            player::change_player(&mut _player);
+            _player.change();
         }
     }
-
 }
