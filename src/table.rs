@@ -64,10 +64,4 @@ impl Table {
 
         false
     }
-
-    pub fn clear(&mut self) {
-        for field in &mut self.fields {
-            *field = ' ';
-        }
-    }
 }

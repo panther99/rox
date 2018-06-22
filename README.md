@@ -21,4 +21,5 @@ cargo run
 * Write more modular code ✓
 * Use mapping instead of checking all fields in `full_table` function ✓
 * Allow replays ✓
+* Playing against computer (unoptimized) ✓
 * AI (maybe)

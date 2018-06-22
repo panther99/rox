@@ -25,8 +25,4 @@ impl Player {
             PlayerKind::O => String::from("o")
         }
     }
-
-    pub fn set_to_x(&mut self) {
-        self.kind = PlayerKind::X;
-    }
 }

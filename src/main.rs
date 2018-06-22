@@ -2,19 +2,16 @@ use std::io;
 
 mod player;
 mod table;
+mod game;
 
-use player::Player as Player;
-use player::PlayerKind as PlayerKind;
-use table::Table as Table;
+use game::Game;
+use game::GameState;
 
 fn main() {
-    let mut _table = Table::new();
-    let mut _player = Player::new(PlayerKind::X);
-
+    let mut current_game = Game::new_against_human();
     let mut input = String::new();
-    let mut field;
-    
-    let mut game_over = false;
+    let mut field = 20;
+    let mut game_started = false;
 
     println!(" _____ _____ __ __ ");
     println!("| __  |     |  |  |");
@@ -22,58 +19,85 @@ fn main() {
     println!("|__|__|_____|__|__|");
 
     println!("ROX - Tic Tac Toe in Rust");
-    println!("Author: panther99 <nikola.stojakovic@hotmail.com>\n");
+    println!("Author: panther99 <nikola.stojakovic@hotmail.com>");
 
-    while !game_over {
-        input.clear();
-        _table.print();
-        println!("Current player: {}", _player.print());
-        println!("Choose field (1-9): ");
+    while current_game.is_running() {
+        while !current_game.is_over() {
 
-        io::stdin().read_line(&mut input).expect("Failed to read the line.");
-        match input.trim().parse::<usize>() {
-            Ok(n) => field = n,
-            Err(_) => {
-                input.clear();
-                field = 0;
-            },
-        }
+            while !game_started {
+                println!("\nChoose playing mod:");
+                println!("[1] Player VS Player");
+                println!("[2] Player VS Computer\n");
 
-        if !_table.mark(&_player, field) {
-            while !_table.mark(&_player, field) {
-                println!("Input is invalid or that field is already marked. Try again.");
-                io::stdin().read_line(&mut input).expect("Failed to read the line.");
-                match input.trim().parse::<usize>() {
-                    Ok(n) => field = n,
-                    Err(_) => {
-                        input.clear();
-                        field = 0;
+                io::stdin()
+                    .read_line(&mut input)
+                    .expect("Failed to read the line.");
+                let answer = input.chars().next().unwrap();
+
+                match answer {
+                    '1' => {
+                        game_started = true;
                     },
+                    '2' => {
+                        current_game = Game::new_against_computer();
+                        game_started = true;
+                    },
+                    _ => {
+                        input.clear();
+                        println!("Please provide a valid input (1 or 2).");
+                    }
                 }
             }
+
+            input.clear();
+            current_game.print_table();
+            println!("Current player: {}", current_game.current_player());
+
+            println!("Choose field (1-9):");
+            if current_game.players_turn() {
+                while !current_game.play_player(field) {
+                    io::stdin()
+                        .read_line(&mut input)
+                        .expect("Failed to read the line.");
+
+                    match input.trim().parse::<usize>() {
+                        Ok(n) => field = n,
+                        Err(_) => {
+                            input.clear();
+                            field = 0;
+                            println!("That field is already filled or input is invalid. Try again.");
+                        }
+                    }
+                }
+            } else {
+                current_game.play_computer();
+            }
+
         }
 
-        if _table.ends_game() {
-            if _table.is_full() {
-                println!("It's a tie!");
-            } else {
-                println!("Player {} won the game!", _player.print());
-            }
+        match current_game.check_winner() {
+            GameState::XWon => println!("Player X won the game!"),
+            GameState::OWon => println!("Player O won the game!"),
+            GameState::HumanWon => println!("Human won the game!"),
+            GameState::ComputerWon => println!("Computer won the game!"),
+            GameState::Tie => println!("It's a tie!")
+        }
 
-            println!("Do you want to play again? (y/n)");
+        println!("Do you want to play again? (y/n)");
+        input.clear();
+        io::stdin()
+            .read_line(&mut input)
+            .expect("Failed to read the line.");
+        let answer = input.chars().next().unwrap();
+
+        if answer == 'y' || answer == 'Y' {
             input.clear();
-            io::stdin().read_line(&mut input).expect("Failed to read the line.");
-            let answer = input.chars().next().unwrap();
-
-            if answer == 'y' || answer == 'Y' {
-                _table.clear();
-                _player.set_to_x();
-            } else {
-                println!("Bye!");
-                game_over = true;
-            }
+            current_game = Game::new_against_human();
+            game_started = false;
+            field = 20;
         } else {
-            _player.change();
+            println!("Bye!");
+            current_game.quit();
         }
     }
 }
