@@ -103,14 +103,6 @@ impl Game {
             },
             None => return false
         }
-        /*
-        if self.remove_from_available_moves(_move) {
-            self.change_player();
-            self.check_table();
-            return true;
-        }
-        false
-        */
     }
 
     pub fn play_computer(&mut self) -> bool {
