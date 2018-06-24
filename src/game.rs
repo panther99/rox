@@ -91,13 +91,26 @@ impl Game {
         !self.against_computer || self.steps % 2 != 0
     }
 
-    pub fn play_player(&mut self, _move: usize) -> bool {
+    pub fn play_player(&mut self, _move: Option<usize>) -> bool {
+        match _move {
+            Some(n) => {
+                if self.remove_from_available_moves(n) {
+                    self.change_player();
+                    self.check_table();
+                    return true;
+                }
+                return false;
+            },
+            None => return false
+        }
+        /*
         if self.remove_from_available_moves(_move) {
             self.change_player();
             self.check_table();
             return true;
         }
         false
+        */
     }
 
     pub fn play_computer(&mut self) -> bool {
@@ -138,9 +151,9 @@ impl Game {
     /*
      * As players are changed after every step
      * we just have to show opposite player
-     * than the current as a winner.
+     * than the current one as a winner.
      */
-    pub fn check_winner(&self) -> GameState {
+    pub fn check_status(&self) -> GameState {
         if self.table.is_full() {
             return GameState::Tie;
         }

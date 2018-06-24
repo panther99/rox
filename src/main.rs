@@ -10,7 +10,7 @@ use game::GameState;
 fn main() {
     let mut current_game = Game::new_against_human();
     let mut input = String::new();
-    let mut field = 20;
+    let mut field: Option<usize> = None;
     let mut game_started = false;
 
     println!(" _____ _____ __ __ ");
@@ -61,10 +61,10 @@ fn main() {
                         .expect("Failed to read the line.");
 
                     match input.trim().parse::<usize>() {
-                        Ok(n) => field = n,
+                        Ok(n) => field = Some(n),
                         Err(_) => {
                             input.clear();
-                            field = 0;
+                            field = None;
                             println!("That field is already filled or input is invalid. Try again.");
                         }
                     }
@@ -75,7 +75,7 @@ fn main() {
 
         }
 
-        match current_game.check_winner() {
+        match current_game.check_status() {
             GameState::XWon => println!("Player X won the game!"),
             GameState::OWon => println!("Player O won the game!"),
             GameState::HumanWon => println!("Human won the game!"),
@@ -94,7 +94,7 @@ fn main() {
             input.clear();
             current_game = Game::new_against_human();
             game_started = false;
-            field = 20;
+            field = None;
         } else {
             println!("Bye!");
             current_game.quit();
